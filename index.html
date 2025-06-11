@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f4f4f9; }
+        .tic-tac-toe { text-align: center; }
+        .grid { display: grid; grid-template: repeat(3, 100px) / repeat(3, 100px); gap: 5px; }
+        .cell { background: red; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; }
+        .controls button { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="tic-tac-toe">
+        <h1>Tic-Tac-Toe</h1>
+        <div class="grid" id="gameBoard">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <button id="reset">Reset Game</button>
+        <p id="status">Player X's Turn</p>
+    </div>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        let currentPlayer = "X", gameState = Array(9).fill(null);
+
+        const win = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+        cells.forEach(cell => cell.onclick = () => {
+            const i = cell.dataset.index;
+            if (gameState[i] || checkWin()) return;
+            gameState[i] = currentPlayer; cell.textContent = currentPlayer;
+            document.getElementById("status").textContent = checkWin() ? `${currentPlayer} Wins!` : gameState.includes(null) ? `Player ${currentPlayer = currentPlayer === "X" ? "O" : "X"}'s Turn` : "Draw!";
+        });
+
+        function checkWin() { return win.some(c => c.every(i => gameState[i] === currentPlayer)); }
+
+        document.getElementById('reset').onclick = () => {
+            gameState.fill(null);
+            cells.forEach(cell => (cell.textContent = ""));
+            currentPlayer = "X";
+            document.getElementById("status").textContent = "Player X's Turn";
+        };
+    </script>
+</body>
+</html>
